@@ -88,18 +88,18 @@ jobs:
           path: ThunderTools
           ref: R4.4.3
 
-      - name: Checkout entservices-infra
+      - name: Checkout entservices-cloudstore
         if: ${{ inputs.caller_source == 'local' }}
         uses: actions/checkout@v3
         with:
-          path: entservices-infra
+          path: entservices-cloudstore
 
-      - name: Checkout entservices-infra-testframework
+      - name: Checkout entservices-cloudstore-testframework
         if: ${{ inputs.caller_source == 'testframework' }}
         uses: actions/checkout@v3
         with:
-          repository: rdkcentral/entservices-infra
-          path: entservices-infra
+          repository: rdkcentral/entservices-cloudstore
+          path: entservices-cloudstore
           ref: develop
 
       - name: Checkout entservices-deviceanddisplay
@@ -124,18 +124,6 @@ jobs:
           repository: google/googletest
           path: googletest
           ref: v1.15.0
-
-      # Fetching only the required essos-resmgr.h file from the Westeros repo to avoid full repo clone and to remove header file dependency
-      - name: Fetch only essos-resmgr.h from Westeros repo using sparse-checkout
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/westeros-minimal
-          cd $GITHUB_WORKSPACE/westeros-minimal
-          git init
-          git remote add origin https://code.rdkcentral.com/r/components/opensource/westeros
-          git config core.sparseCheckout true
-          git pull --depth=1 origin master
-          mkdir -p $GITHUB_WORKSPACE/entservices-infra/ResourceManager
-          cp essos/essos-resmgr.h $GITHUB_WORKSPACE/entservices-infra/ResourceManager/
 
       - name: Apply patches ThunderTools
         run: |  
@@ -415,11 +403,11 @@ jobs:
           &&
           cmake --install build/entservices-deviceanddisplay
 
-      - name: Build entservices-infra
+      - name: Build entservices-cloudstore
         run: >
           cmake
-          -S "$GITHUB_WORKSPACE/entservices-infra"
-          -B build/entservices-infra
+          -S "$GITHUB_WORKSPACE/entservices-cloudstore"
+          -B build/entservices-cloudstore
           -DCMAKE_TOOLCHAIN_FILE="${{ env.TOOLCHAIN_FILE }}"
           -DCMAKE_INSTALL_PREFIX="$GITHUB_WORKSPACE/install/usr"
           -DCMAKE_MODULE_PATH="$GITHUB_WORKSPACE/install/tools/cmake"
@@ -513,9 +501,9 @@ jobs:
           -DDS_FOUND=ON
           -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           &&
-          cmake --build build/entservices-infra -j6
+          cmake --build build/entservices-cloudstore -j6
           &&
-          cmake --install build/entservices-infra
+          cmake --install build/entservices-cloudstore
 
       - name: Build entservices-testframework
         run: >
@@ -734,12 +722,12 @@ jobs:
           &&
           lcov -c
           -o coverage.info
-          -d build/entservices-infra
+          -d build/entservices-cloudstore
           &&
           lcov
           -r coverage.info
           '/usr/include/*'
-          '*/build/entservices-infra/_deps/*'
+          '*/build/entservices-cloudstore/_deps/*'
           '*/build/entservices-deviceanddisplay/_deps/*'
           '*/build/entservices-entservices-testframework/_deps/*'
           '*/install/usr/include/*'
@@ -754,14 +742,14 @@ jobs:
           &&
           genhtml
           -o coverage
-          -t "entservices-infra coverage"
+          -t "entservices-cloudstore coverage"
           filtered_coverage.info
 
       - name: Upload artifacts
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-L2-infra
+          name: artifacts-L2-cloudstore
           path: |
             coverage/
             valgrind_log
