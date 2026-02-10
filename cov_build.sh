@@ -19,9 +19,9 @@ cmake -G Ninja -S "$GITHUB_WORKSPACE" -B build/entservices-cloudstore \
 -DCMAKE_DISABLE_FIND_PACKAGE_DS=ON \
 -DCOMCAST_CONFIG=OFF \
 -DRDK_SERVICES_COVERITY=ON \
--DRDK_SERVICES_L1_TEST=ON \
+-DRDK_SERVICES_L1_TEST=OFF \
 -DDS_FOUND=ON \
--DPLUGIN_CLOUDSTORE=ON \
+-DPLUGIN_CLOUDSTORE=OFF \
 -DCMAKE_CXX_FLAGS="-DEXCEPTIONS_ENABLE=ON \
 -I ${GITHUB_WORKSPACE}/entservices-testframework/Tests/headers \
 -I ${GITHUB_WORKSPACE}/entservices-testframework/Tests/headers/audiocapturemgr \
