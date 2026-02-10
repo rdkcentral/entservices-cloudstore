@@ -62,5 +62,7 @@ cmake -G Ninja -S "$GITHUB_WORKSPACE" -B build/entservices-cloudstore \
 
 
 cmake --build build/entservices-cloudstore --target install
+cmake --build build/entservices-cloudstore
+cmake --install build/entservices-cloudstore
 echo "======================================================================================"
 exit 0
