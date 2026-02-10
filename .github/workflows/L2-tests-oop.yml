@@ -322,6 +322,7 @@ jobs:
           -DL2_TEST_OOP_RPC=ON
           -DCMAKE_CXX_FLAGS="
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests/headers
+          -I $GITHUB_WORKSPACE/entservices-cloudstore/helpers
           -I $GITHUB_WORKSPACE/install/usr/include"
           &&
           cmake --build build/mocks -j8
