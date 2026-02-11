@@ -7,6 +7,7 @@ When writing review comments based on custom instructions located in .github/ins
 ## Examples
 
 Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github/instructions/Plugin.instructions.md#interface-implementation 
+
 Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github/instructions/Pluginlifecycle.instructions.md#deactivated
 
 Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github/instructions/Pluginimplementation.instructions.md#inter-plugin-communication 
@@ -16,4 +17,5 @@ Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github
 Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github/instructions/Pluginconfig.instructions.md#plugin-configuration
 
 Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github/instructions/Plugincmake.instructions.md#namespace-usage
+
 Refer: https://github.com/rdkcentral/entservices-cloudstore/blob/develop/.github/instructions/PluginOnboardingCompliance.instructions.md#coverity-scan-inclusion-and-test-workflow-updates-for-new-plugins
