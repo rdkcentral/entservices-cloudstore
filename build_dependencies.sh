@@ -74,6 +74,7 @@ cmake --build build/Thunder --target install
 echo "======================================================================================"
 echo "buliding entservices-apis"
 cd entservices-apis
+patch -p1 < $GITHUB_WORKSPACE/entservices-testframework/patches/RDKEMW-1007.patch
 rm -rf jsonrpc/DTV.json
 cd ..
 
