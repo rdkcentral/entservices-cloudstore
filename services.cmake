@@ -34,13 +34,6 @@ if(PLUGIN_CONTINUEWATCHING)
     endif()
 endif()
 
-
-if(PLUGIN_CONTINUEWATCHING)
-    if(CONTINUEWATCHING_DISABLE_SECAPI)
-        add_definitions (-DDISABLE_SECAPI)
-    endif()
-endif()
-
 if (BUILD_ENABLE_TELEMETRY_LOGGING)
     message("Building with telemetry logging")
     add_definitions (-DENABLE_TELEMETRY_LOGGING)
