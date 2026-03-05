@@ -23,6 +23,7 @@
 #endif
 
 #include <interfaces/IConfiguration.h>
+#include <stdio.h>
 
 #define API_VERSION_NUMBER_MAJOR 1
 #define API_VERSION_NUMBER_MINOR 0
@@ -127,6 +128,7 @@ namespace Plugin {
         ASSERT(_service == service);
 
         SYSLOG(Logging::Shutdown, (string(_T("CloudStore::Deinitialize"))));
+        printf("Test coverity workflow %s\n");
 
         _service->Unregister(&_notification);
 

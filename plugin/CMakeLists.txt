@@ -39,6 +39,8 @@ target_link_libraries(${MODULE_NAME} PRIVATE
         ${NAMESPACE}Definitions::${NAMESPACE}Definitions
 )
 
+target_compile_options(${MODULE_NAME} PRIVATE -Wno-error=format)
+
 find_library(RFC_LIBRARIES NAMES rfcapi)
 if (RFC_LIBRARIES)
     find_path(RFC_INCLUDE_DIRS NAMES rfcapi.h REQUIRED)
