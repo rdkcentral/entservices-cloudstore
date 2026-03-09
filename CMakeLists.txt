@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-project(CloudStore)
 cmake_minimum_required(VERSION 3.3)
+project(CloudStore)
 
 find_package(WPEFramework)
 
