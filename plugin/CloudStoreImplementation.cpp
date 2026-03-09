@@ -40,6 +40,7 @@ namespace Plugin {
 
     uint32_t CloudStoreImplementation::Configure(PluginHost::IShell* service)
     {
+        ASSERT(_accountStore2 != nullptr);
         if (_accountStore2 == nullptr) {
             return Core::ERROR_GENERAL;
         }
