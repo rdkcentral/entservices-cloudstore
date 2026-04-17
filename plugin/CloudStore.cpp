@@ -57,6 +57,7 @@ namespace Plugin {
         ASSERT(_connectionId == 0);
 
         SYSLOG(Logging::Startup, (_T("CloudStore::Initialize: PID=%u")));
+        LOGINFO("CloudStore::Initialize: PID=%u");
 
         _service = service;
         _service->AddRef();
