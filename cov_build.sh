@@ -55,6 +55,7 @@ cmake -G Ninja -S "$GITHUB_WORKSPACE" -B build/entservices-cloudstore \
 -I ${GITHUB_WORKSPACE}/entservices-testframework/Tests/mocks \
 -I ${GITHUB_WORKSPACE}/entservices-testframework/Tests/mocks/thunder \
 -I /usr/include/libdrm \
+-I ${GITHUB_WORKSPACE}/helpers \
 -include ${GITHUB_WORKSPACE}/entservices-testframework/Tests/mocks/devicesettings.h \
 -include ${GITHUB_WORKSPACE}/entservices-testframework/Tests/mocks/Iarm.h \
 -include ${GITHUB_WORKSPACE}/entservices-testframework/Tests/mocks/Rfc.h \
@@ -70,7 +71,6 @@ cmake -G Ninja -S "$GITHUB_WORKSPACE" -B build/entservices-cloudstore \
 -include ${GITHUB_WORKSPACE}/entservices-testframework/Tests/headers/Dobby/DobbyProxy.h \
 -include ${GITHUB_WORKSPACE}/entservices-testframework/Tests/headers/Dobby/Public/Dobby/IDobbyProxy.h \
 -include ${GITHUB_WORKSPACE}/entservices-testframework/Tests/headers/Dobby/IpcService/IpcFactory.h \
--include ${GITHUB_WORKSPACE}/helpers \
 -Wall -Werror -Wno-error=format \
 -Wl,-wrap,system -Wl,-wrap,popen -Wl,-wrap,syslog \
 -DENABLE_TELEMETRY_LOGGING -DHAS_API_SYSTEM \
