@@ -34,9 +34,11 @@ add_library(${MODULE_NAME} SHARED
 
 find_package(${NAMESPACE}Plugins REQUIRED)
 find_package(${NAMESPACE}Definitions REQUIRED)
+find_package(${NAMESPACE}Helpers REQUIRED)
 target_link_libraries(${MODULE_NAME} PRIVATE
         ${NAMESPACE}Plugins::${NAMESPACE}Plugins
         ${NAMESPACE}Definitions::${NAMESPACE}Definitions
+        ${NAMESPACE}::${NAMESPACE}Helpers
 )
 
 find_library(RFC_LIBRARIES NAMES rfcapi)
@@ -59,6 +61,7 @@ add_library(${PLUGIN_IMPLEMENTATION} SHARED
 target_link_libraries(${PLUGIN_IMPLEMENTATION} PRIVATE
         ${NAMESPACE}Plugins::${NAMESPACE}Plugins
         ${NAMESPACE}Definitions::${NAMESPACE}Definitions
+        ${NAMESPACE}::${NAMESPACE}Helpers
 )
 
 find_library(IARMBUS_LIBRARIES NAMES IARMBus)
