@@ -28,10 +28,12 @@ namespace Plugin {
     CloudStoreImplementation::CloudStoreImplementation()
         : _accountStore2(Core::Service<Grpc::Store2>::Create<Exchange::IStore2>())
     {
+        SYSLOG(Logging::Startup, (_T("%s"), __FUNCTION__));
     }
 
     CloudStoreImplementation::~CloudStoreImplementation()
     {
+        SYSLOG(Logging::Shutdown, (_T("%s"), __FUNCTION__));
         if (_accountStore2 != nullptr) {
             _accountStore2->Release();
             _accountStore2 = nullptr;

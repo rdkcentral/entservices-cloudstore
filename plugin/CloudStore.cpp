@@ -68,6 +68,7 @@ namespace Plugin {
 
 #ifdef WITH_RFC
         RFC_ParamData_t rfcParam;
+        SYSLOG(Logging::Startup, (_T("%s getRFCParameter"), __FUNCTION__));
         auto rfcStatus = getRFCParameter(nullptr, URI_RFC, &rfcParam);
         if (rfcStatus == WDMP_SUCCESS) {
             if (rfcParam.value[0]) {
@@ -98,26 +99,36 @@ namespace Plugin {
             security->Release();
         }
 
+        SYSLOG(Logging::Startup,
+            (_T("%s token: %s"), __FUNCTION__, token.c_str()));
+
         Core::SystemInfo::SetEnvironment(TOKEN_ENV, token);
 
         _service->Register(&_notification);
 
+        SYSLOG(Logging::Startup, (_T("%s Root"), __FUNCTION__));
         _store2 = _service->Root<Exchange::IStore2>(_connectionId, RPC::CommunicationTimeOut, _T("CloudStoreImplementation"));
         if (_store2 != nullptr) {
 
+            SYSLOG(Logging::Startup, (_T("%s QueryInterface"), __FUNCTION__));
             auto configConnection = _store2->QueryInterface<Exchange::IConfiguration>();
             if (configConnection != nullptr) {
+                SYSLOG(Logging::Startup, (_T("%s Configure"), __FUNCTION__));
                 configConnection->Configure(service);
+                SYSLOG(Logging::Startup, (_T("%s Release"), __FUNCTION__));
                 configConnection->Release();
             } else {
                 result = _T("Failed to get IConfiguration");
             }
 
             Exchange::JStore2::Register(*this, _store2);
+            SYSLOG(Logging::Startup, (_T("%s Register"), __FUNCTION__));
             _store2->Register(&_store2Sink);
         } else {
             result = _T("Couldn't create implementation instance");
         }
+
+        SYSLOG(Logging::Startup, (_T("CloudStore initialised")));
 
         return result;
     }
@@ -131,11 +142,15 @@ namespace Plugin {
         _service->Unregister(&_notification);
 
         if (_store2 != nullptr) {
+            SYSLOG(Logging::Shutdown, (_T("%s Unregister"), __FUNCTION__));
             _store2->Unregister(&_store2Sink);
+            SYSLOG(Logging::Shutdown, (_T("%s Unregister end"), __FUNCTION__));
             Exchange::JStore2::Unregister(*this);
 
             auto connection = _service->RemoteConnection(_connectionId);
             VARIABLE_IS_NOT_USED auto result = _store2->Release();
+            SYSLOG(Logging::Shutdown,
+                (_T("%s %" PRIu32), __FUNCTION__, result));
             _store2 = nullptr;
             ASSERT(result == Core::ERROR_DESTRUCTION_SUCCEEDED);
             if (connection != nullptr) {

@@ -117,8 +117,12 @@ namespace Plugin {
             , _store2Sink(*this)
             , _notification(*this)
         {
+            SYSLOG(Logging::Startup, (_T("%s"), __FUNCTION__));
         }
-        ~CloudStore() override = default;
+        ~CloudStore() override
+        {
+            SYSLOG(Logging::Shutdown, (_T("%s"), __FUNCTION__));
+        }
 
         BEGIN_INTERFACE_MAP(CloudStore)
         INTERFACE_ENTRY(PluginHost::IPlugin)

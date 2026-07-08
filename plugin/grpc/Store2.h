@@ -81,11 +81,13 @@ namespace Plugin {
                 , _service(nullptr)
                 , _authorization((_uri.find("localhost") == string::npos) && (_uri.find("0.0.0.0") == string::npos))
             {
+                SYSLOG(Logging::Startup, (_T("%s"), __FUNCTION__));
                 Open();
             }
 
             ~Store2() override
             {
+                SYSLOG(Logging::Shutdown, (_T("%s"), __FUNCTION__));
                 if (_service != nullptr) {
                     _service->Release();
                     _service = nullptr;
@@ -95,6 +97,7 @@ namespace Plugin {
         private:
             void Open()
             {
+                SYSLOG(Logging::Startup, (_T("%s"), __FUNCTION__));
                 grpc::ChannelArguments args;
                 args.SetInt(GRPC_ARG_CLIENT_IDLE_TIMEOUT_MS, IDLE_TIMEOUT);
                 std::shared_ptr<grpc::ChannelCredentials> creds;
@@ -105,6 +108,7 @@ namespace Plugin {
                 }
                 _stub = ::distp::gateway::secure_storage::v1::SecureStorageService::NewStub(
                     grpc::CreateCustomChannel(_uri, creds, args));
+                SYSLOG(Logging::Startup, (_T("%s end"), __FUNCTION__));
             }
 
         private:
@@ -179,17 +183,23 @@ namespace Plugin {
         public:
             uint32_t Register(INotification* notification) override
             {
+                SYSLOG(Logging::Startup,
+                    (_T("%s %p"), __FUNCTION__, (void*)notification));
                 Core::SafeSyncType<Core::CriticalSection> lock(_clientLock);
 
                 ASSERT(std::find(_clients.begin(), _clients.end(), notification) == _clients.end());
 
                 notification->AddRef();
                 _clients.push_back(notification);
+                SYSLOG(Logging::Startup,
+                    (_T("%s %p end"), __FUNCTION__, (void*)notification));
 
                 return Core::ERROR_NONE;
             }
             uint32_t Unregister(INotification* notification) override
             {
+                SYSLOG(Logging::Shutdown,
+                    (_T("%s %p"), __FUNCTION__, (void*)notification));
                 Core::SafeSyncType<Core::CriticalSection> lock(_clientLock);
 
                 std::list<INotification*>::iterator
@@ -201,6 +211,8 @@ namespace Plugin {
                     notification->Release();
                     _clients.erase(index);
                 }
+                SYSLOG(Logging::Shutdown,
+                    (_T("%s %p end"), __FUNCTION__, (void*)notification));
 
                 return Core::ERROR_NONE;
             }
@@ -388,9 +400,11 @@ namespace Plugin {
 
             virtual uint32_t Configure(PluginHost::IShell* service) override
             {
+                SYSLOG(Logging::Startup, (_T("%s"), __FUNCTION__));
                 ASSERT(service != nullptr);
                 _service = service;
                 _service->AddRef();
+                SYSLOG(Logging::Startup, (_T("%s end"), __FUNCTION__));
 
                 return Core::ERROR_NONE;
             }
