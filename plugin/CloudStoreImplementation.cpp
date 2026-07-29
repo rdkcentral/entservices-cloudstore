@@ -42,6 +42,11 @@ namespace Plugin {
     {
         ASSERT(_accountStore2 != nullptr);
 
+        //coverity fix: NULL_FIELD - check service parameter before passing to Configure
+        if (service == nullptr) {
+            return Core::ERROR_UNAVAILABLE;
+        }
+
         auto configConnection = _accountStore2->QueryInterface<Exchange::IConfiguration>();
         if (configConnection != nullptr) {
             configConnection->Configure(service);
