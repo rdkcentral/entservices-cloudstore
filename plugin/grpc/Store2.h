@@ -71,7 +71,7 @@ namespace Plugin {
 
         public:
             Store2()
-                : Store2(getenv(URI_ENV), getenv(TOKEN_ENV))
+                : Store2(getenv(URI_ENV) ? getenv(URI_ENV) : "", getenv(TOKEN_ENV) ? getenv(TOKEN_ENV) : "")
             {
             }
             Store2(const string& uri, const string& token)
