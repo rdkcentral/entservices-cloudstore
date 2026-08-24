@@ -51,8 +51,11 @@ namespace Plugin {
             return Core::ERROR_GENERAL;
         }
 
-        configConnection->Configure(service);
+        uint32_t result = configConnection->Configure(service);
         configConnection->Release();
+        if (result != Core::ERROR_NONE) {
+            return result;
+        }
         return Core::ERROR_NONE;
     }
 
