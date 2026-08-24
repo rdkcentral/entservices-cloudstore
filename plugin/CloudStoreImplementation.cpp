@@ -42,20 +42,12 @@ namespace Plugin {
     {
         ASSERT(_accountStore2 != nullptr);
 
-        if (_accountStore2 == nullptr) {
-            return Core::ERROR_GENERAL;
-        }
-
         auto configConnection = _accountStore2->QueryInterface<Exchange::IConfiguration>();
         if (configConnection == nullptr) {
-            return Core::ERROR_GENERAL;
+            configConnection->Configure(service);
+            configConnection->Release();
         }
 
-        uint32_t result = configConnection->Configure(service);
-        configConnection->Release();
-        if (result != Core::ERROR_NONE) {
-            return result;
-        }
         return Core::ERROR_NONE;
     }
 
