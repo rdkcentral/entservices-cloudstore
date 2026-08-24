@@ -43,7 +43,7 @@ namespace Plugin {
         ASSERT(_accountStore2 != nullptr);
 
         auto configConnection = _accountStore2->QueryInterface<Exchange::IConfiguration>();
-        if (configConnection == nullptr) {
+        if (configConnection != nullptr) {
             configConnection->Configure(service);
             configConnection->Release();
         }
