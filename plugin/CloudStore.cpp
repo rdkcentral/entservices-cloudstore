@@ -107,11 +107,8 @@ namespace Plugin {
 
             auto configConnection = _store2->QueryInterface<Exchange::IConfiguration>();
             if (configConnection != nullptr) {
-                uint32_t configResult = configConnection->Configure(service);
+                configConnection->Configure(service);
                 configConnection->Release();
-                if (configResult != Core::ERROR_NONE) {
-                    result = _T("Backend configuration failed");
-                }
             } else {
                 result = _T("Failed to get IConfiguration");
             }
