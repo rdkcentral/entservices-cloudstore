@@ -69,9 +69,16 @@ namespace Plugin {
             Store2(const Store2&) = delete;
             Store2& operator=(const Store2&) = delete;
 
+        private:
+            static string SafeGetEnv(const char* name)
+            {
+                const char* value = getenv(name);
+                return (value != nullptr) ? string(value) : string("");
+            }
+
         public:
             Store2()
-                : Store2(getenv(URI_ENV), getenv(TOKEN_ENV))
+                : Store2(SafeGetEnv(URI_ENV), SafeGetEnv(TOKEN_ENV))
             {
             }
             Store2(const string& uri, const string& token)
