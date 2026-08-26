@@ -20,6 +20,7 @@
 #include "CloudStoreImplementation.h"
 #include "grpc/Store2.h"
 
+
 namespace WPEFramework {
 namespace Plugin {
 
