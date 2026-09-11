@@ -23,7 +23,7 @@
 #include <interfaces/IStore2.h>
 #include <interfaces/IConfiguration.h>
 
-namespace WPEFramework {
+namespace Thunder {
 namespace Plugin {
 
     class CloudStoreImplementation : public Exchange::IStore2, public Exchange::IConfiguration {
@@ -91,4 +91,4 @@ namespace Plugin {
     };
 
 } // namespace Plugin
-} // namespace WPEFramework
+} // namespace Thunder

@@ -32,15 +32,15 @@ using ::testing::NiceMock;
 using ::testing::NotNull;
 using ::testing::Return;
 using ::testing::Test;
-using ::WPEFramework::Core::PublishedServiceType;
-using ::WPEFramework::Exchange::IStore2;
-using ::WPEFramework::JsonData::Store2::DeleteNamespaceParamsData;
-using ::WPEFramework::JsonData::Store2::GetValueParamsInfo;
-using ::WPEFramework::JsonData::Store2::GetValueResultData;
-using ::WPEFramework::JsonData::Store2::SetValueParamsData;
-using ::WPEFramework::Plugin::CloudStore;
-using ::WPEFramework::PluginHost::IDispatcher;
-using ::WPEFramework::PluginHost::IPlugin;
+using ::Thunder::Core::PublishedServiceType;
+using ::Thunder::Exchange::IStore2;
+using ::Thunder::JsonData::Store2::DeleteNamespaceParamsData;
+using ::Thunder::JsonData::Store2::GetValueParamsInfo;
+using ::Thunder::JsonData::Store2::GetValueResultData;
+using ::Thunder::JsonData::Store2::SetValueParamsData;
+using ::Thunder::Plugin::CloudStore;
+using ::Thunder::PluginHost::IDispatcher;
+using ::Thunder::PluginHost::IPlugin;
 
 const auto kValue = "value_1";
 const auto kKey = "key_1";
@@ -52,8 +52,8 @@ protected:
     NiceMock<ServiceMock>* service;
     IPlugin* plugin;
     ACloudStore()
-        : service(WPEFramework::Core::Service<NiceMock<ServiceMock>>::Create<NiceMock<ServiceMock>>())
-        , plugin(WPEFramework::Core::Service<CloudStore>::Create<IPlugin>())
+        : service(Thunder::Core::Service<NiceMock<ServiceMock>>::Create<NiceMock<ServiceMock>>())
+        , plugin(Thunder::Core::Service<CloudStore>::Create<IPlugin>())
     {
     }
     ~ACloudStore() override
@@ -77,11 +77,11 @@ TEST_F(ACloudStore, GetsValueInAccountScopeViaJsonRpc)
                         EXPECT_THAT(key, Eq(kKey));
                         value = kValue;
                         ttl = kTtl;
-                        return WPEFramework::Core::ERROR_NONE;
+                        return Thunder::Core::ERROR_NONE;
                     }));
         }
     };
-    PublishedServiceType<CloudStoreImplementation> metadata(WPEFramework::Core::System::MODULE_NAME, 1, 0, 0);
+    PublishedServiceType<CloudStoreImplementation> metadata(Thunder::Core::System::MODULE_NAME, 1, 0, 0);
     ASSERT_THAT(plugin->Initialize(service), Eq(""));
     auto jsonRpc = plugin->QueryInterface<IDispatcher>();
     ASSERT_THAT(jsonRpc, NotNull());
@@ -92,7 +92,7 @@ TEST_F(ACloudStore, GetsValueInAccountScopeViaJsonRpc)
     string paramsJsonStr;
     params.ToString(paramsJsonStr);
     string resultJsonStr;
-    ASSERT_THAT(jsonRpc->Invoke(0, 0, "", "getValue", paramsJsonStr, resultJsonStr), Eq(WPEFramework::Core::ERROR_NONE));
+    ASSERT_THAT(jsonRpc->Invoke(0, 0, "", "getValue", paramsJsonStr, resultJsonStr), Eq(Thunder::Core::ERROR_NONE));
     GetValueResultData result;
     result.FromString(resultJsonStr);
     EXPECT_THAT(result.Value.Value(), Eq(kValue));
@@ -115,11 +115,11 @@ TEST_F(ACloudStore, SetsValueInAccountScopeViaJsonRpc)
                         EXPECT_THAT(key, Eq(kKey));
                         EXPECT_THAT(value, Eq(kValue));
                         EXPECT_THAT(ttl, Eq(kTtl));
-                        return WPEFramework::Core::ERROR_NONE;
+                        return Thunder::Core::ERROR_NONE;
                     }));
         }
     };
-    PublishedServiceType<CloudStoreImplementation> metadata(WPEFramework::Core::System::MODULE_NAME, 1, 0, 0);
+    PublishedServiceType<CloudStoreImplementation> metadata(Thunder::Core::System::MODULE_NAME, 1, 0, 0);
     ASSERT_THAT(plugin->Initialize(service), Eq(""));
     auto jsonRpc = plugin->QueryInterface<IDispatcher>();
     ASSERT_THAT(jsonRpc, NotNull());
@@ -132,7 +132,7 @@ TEST_F(ACloudStore, SetsValueInAccountScopeViaJsonRpc)
     string paramsJsonStr;
     params.ToString(paramsJsonStr);
     string resultJsonStr;
-    EXPECT_THAT(jsonRpc->Invoke(0, 0, "", "setValue", paramsJsonStr, resultJsonStr), Eq(WPEFramework::Core::ERROR_NONE));
+    EXPECT_THAT(jsonRpc->Invoke(0, 0, "", "setValue", paramsJsonStr, resultJsonStr), Eq(Thunder::Core::ERROR_NONE));
     jsonRpc->Release();
     plugin->Deinitialize(service);
 }
@@ -149,11 +149,11 @@ TEST_F(ACloudStore, DeletesKeyInAccountScopeViaJsonRpc)
                         EXPECT_THAT(scope, Eq(IStore2::ScopeType::ACCOUNT));
                         EXPECT_THAT(ns, Eq(kAppId));
                         EXPECT_THAT(key, Eq(kKey));
-                        return WPEFramework::Core::ERROR_NONE;
+                        return Thunder::Core::ERROR_NONE;
                     }));
         }
     };
-    PublishedServiceType<CloudStoreImplementation> metadata(WPEFramework::Core::System::MODULE_NAME, 1, 0, 0);
+    PublishedServiceType<CloudStoreImplementation> metadata(Thunder::Core::System::MODULE_NAME, 1, 0, 0);
     ASSERT_THAT(plugin->Initialize(service), Eq(""));
     auto jsonRpc = plugin->QueryInterface<IDispatcher>();
     ASSERT_THAT(jsonRpc, NotNull());
@@ -164,7 +164,7 @@ TEST_F(ACloudStore, DeletesKeyInAccountScopeViaJsonRpc)
     string paramsJsonStr;
     params.ToString(paramsJsonStr);
     string resultJsonStr;
-    EXPECT_THAT(jsonRpc->Invoke(0, 0, "", "deleteKey", paramsJsonStr, resultJsonStr), Eq(WPEFramework::Core::ERROR_NONE));
+    EXPECT_THAT(jsonRpc->Invoke(0, 0, "", "deleteKey", paramsJsonStr, resultJsonStr), Eq(Thunder::Core::ERROR_NONE));
     jsonRpc->Release();
     plugin->Deinitialize(service);
 }
@@ -180,11 +180,11 @@ TEST_F(ACloudStore, DeletesNamespaceInAccountScopeViaJsonRpc)
                     [](const IStore2::ScopeType scope, const string& ns) {
                         EXPECT_THAT(scope, Eq(IStore2::ScopeType::ACCOUNT));
                         EXPECT_THAT(ns, Eq(kAppId));
-                        return WPEFramework::Core::ERROR_NONE;
+                        return Thunder::Core::ERROR_NONE;
                     }));
         }
     };
-    PublishedServiceType<CloudStoreImplementation> metadata(WPEFramework::Core::System::MODULE_NAME, 1, 0, 0);
+    PublishedServiceType<CloudStoreImplementation> metadata(Thunder::Core::System::MODULE_NAME, 1, 0, 0);
     ASSERT_THAT(plugin->Initialize(service), Eq(""));
     auto jsonRpc = plugin->QueryInterface<IDispatcher>();
     ASSERT_THAT(jsonRpc, NotNull());
@@ -194,7 +194,7 @@ TEST_F(ACloudStore, DeletesNamespaceInAccountScopeViaJsonRpc)
     string paramsJsonStr;
     params.ToString(paramsJsonStr);
     string resultJsonStr;
-    EXPECT_THAT(jsonRpc->Invoke(0, 0, "", "deleteNamespace", paramsJsonStr, resultJsonStr), Eq(WPEFramework::Core::ERROR_NONE));
+    EXPECT_THAT(jsonRpc->Invoke(0, 0, "", "deleteNamespace", paramsJsonStr, resultJsonStr), Eq(Thunder::Core::ERROR_NONE));
     jsonRpc->Release();
     plugin->Deinitialize(service);
 }

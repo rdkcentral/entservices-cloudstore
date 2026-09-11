@@ -46,9 +46,9 @@ using ::testing::Le;
 using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::Test;
-using ::WPEFramework::Core::Time;
-using ::WPEFramework::Exchange::IStore2;
-using ::WPEFramework::Plugin::Grpc::Store2;
+using ::Thunder::Core::Time;
+using ::Thunder::Exchange::IStore2;
+using ::Thunder::Plugin::Grpc::Store2;
 
 const auto kUri = "0.0.0.0:50051";
 const auto kValue = "value_1";
@@ -59,21 +59,21 @@ const auto kScope = Scope::SCOPE_ACCOUNT;
 
 class AStore2 : public Test {
 protected:
-    WPEFramework::Core::ProxyType<WorkerPoolImplementation> workerPool;
+    Thunder::Core::ProxyType<WorkerPoolImplementation> workerPool;
     NiceMock<SecureStorageServiceMock> service;
     Server server;
-    WPEFramework::Core::ProxyType<IStore2> store2;
+    Thunder::Core::ProxyType<IStore2> store2;
     AStore2()
-        : workerPool(WPEFramework::Core::ProxyType<WorkerPoolImplementation>::Create(
-              WPEFramework::Core::Thread::DefaultStackSize()))
+        : workerPool(Thunder::Core::ProxyType<WorkerPoolImplementation>::Create(
+              Thunder::Core::Thread::DefaultStackSize()))
         , server(kUri, &service)
-        , store2(WPEFramework::Core::ProxyType<Store2>::Create(kUri, ""))
+        , store2(Thunder::Core::ProxyType<Store2>::Create(kUri, ""))
     {
-        WPEFramework::Core::IWorkerPool::Assign(&(*workerPool));
+        Thunder::Core::IWorkerPool::Assign(&(*workerPool));
     }
     ~AStore2() override
     {
-        WPEFramework::Core::IWorkerPool::Assign(nullptr);
+        Thunder::Core::IWorkerPool::Assign(nullptr);
     }
 };
 
@@ -100,7 +100,7 @@ TEST_F(AStore2, GetsValueWithTtl)
 
     string v;
     uint32_t t;
-    ASSERT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(WPEFramework::Core::ERROR_NONE));
+    ASSERT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(Thunder::Core::ERROR_NONE));
     ASSERT_THAT(req.has_key(), IsTrue());
     EXPECT_THAT(req.key().key(), Eq(kKey));
     EXPECT_THAT(req.key().app_id(), Eq(kAppId));
@@ -116,7 +116,7 @@ TEST_F(AStore2, DoesNotGetValueWhenResponseHasNoValue)
 
     string v;
     uint32_t t;
-    EXPECT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(WPEFramework::Core::ERROR_UNKNOWN_KEY));
+    EXPECT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(Thunder::Core::ERROR_UNKNOWN_KEY));
 }
 
 TEST_F(AStore2, DoesNotGetValueWhenNOT_FOUND)
@@ -126,7 +126,7 @@ TEST_F(AStore2, DoesNotGetValueWhenNOT_FOUND)
 
     string v;
     uint32_t t;
-    EXPECT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(WPEFramework::Core::ERROR_UNKNOWN_KEY));
+    EXPECT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(Thunder::Core::ERROR_UNKNOWN_KEY));
 }
 
 TEST_F(AStore2, DoesNotGetValueWhenINVALID_ARGUMENT)
@@ -136,7 +136,7 @@ TEST_F(AStore2, DoesNotGetValueWhenINVALID_ARGUMENT)
 
     string v;
     uint32_t t;
-    EXPECT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(WPEFramework::Core::ERROR_INVALID_INPUT_LENGTH));
+    EXPECT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(Thunder::Core::ERROR_INVALID_INPUT_LENGTH));
 }
 
 TEST_F(AStore2, GetsValueWithExpireTime)
@@ -162,7 +162,7 @@ TEST_F(AStore2, GetsValueWithExpireTime)
 
     string v;
     uint32_t t;
-    ASSERT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(WPEFramework::Core::ERROR_NONE));
+    ASSERT_THAT(store2->GetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, v, t), Eq(Thunder::Core::ERROR_NONE));
     ASSERT_THAT(req.has_key(), IsTrue());
     EXPECT_THAT(req.key().key(), Eq(kKey));
     EXPECT_THAT(req.key().app_id(), Eq(kAppId));
@@ -182,7 +182,7 @@ TEST_F(AStore2, SetsValueWithTtl)
                 return grpc::Status::OK;
             }));
 
-    ASSERT_THAT(store2->SetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, kValue, kTtl), Eq(WPEFramework::Core::ERROR_NONE));
+    ASSERT_THAT(store2->SetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, kValue, kTtl), Eq(Thunder::Core::ERROR_NONE));
     ASSERT_THAT(req.has_value(), IsTrue());
     EXPECT_THAT(req.value().value(), Eq(kValue));
     ASSERT_THAT(req.value().has_key(), IsTrue());
@@ -198,7 +198,7 @@ TEST_F(AStore2, DoesNotSetValueWhenINVALID_ARGUMENT)
     ON_CALL(service, UpdateValue(_, _, _))
         .WillByDefault(Return(grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "")));
 
-    EXPECT_THAT(store2->SetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, kValue, kTtl), Eq(WPEFramework::Core::ERROR_INVALID_INPUT_LENGTH));
+    EXPECT_THAT(store2->SetValue(IStore2::ScopeType::ACCOUNT, kAppId, kKey, kValue, kTtl), Eq(Thunder::Core::ERROR_INVALID_INPUT_LENGTH));
 }
 
 TEST_F(AStore2, DeletesKey)
@@ -211,7 +211,7 @@ TEST_F(AStore2, DeletesKey)
                 return grpc::Status::OK;
             }));
 
-    ASSERT_THAT(store2->DeleteKey(IStore2::ScopeType::ACCOUNT, kAppId, kKey), Eq(WPEFramework::Core::ERROR_NONE));
+    ASSERT_THAT(store2->DeleteKey(IStore2::ScopeType::ACCOUNT, kAppId, kKey), Eq(Thunder::Core::ERROR_NONE));
     ASSERT_THAT(req.has_key(), IsTrue());
     EXPECT_THAT(req.key().key(), Eq(kKey));
     EXPECT_THAT(req.key().app_id(), Eq(kAppId));
@@ -223,7 +223,7 @@ TEST_F(AStore2, DoesNotDeleteKeyWhenINVALID_ARGUMENT)
     ON_CALL(service, DeleteValue(_, _, _))
         .WillByDefault(Return(grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "")));
 
-    EXPECT_THAT(store2->DeleteKey(IStore2::ScopeType::ACCOUNT, kAppId, kKey), Eq(WPEFramework::Core::ERROR_INVALID_INPUT_LENGTH));
+    EXPECT_THAT(store2->DeleteKey(IStore2::ScopeType::ACCOUNT, kAppId, kKey), Eq(Thunder::Core::ERROR_INVALID_INPUT_LENGTH));
 }
 
 TEST_F(AStore2, DeletesNamespace)
@@ -236,7 +236,7 @@ TEST_F(AStore2, DeletesNamespace)
                 return grpc::Status::OK;
             }));
 
-    ASSERT_THAT(store2->DeleteNamespace(IStore2::ScopeType::ACCOUNT, kAppId), Eq(WPEFramework::Core::ERROR_NONE));
+    ASSERT_THAT(store2->DeleteNamespace(IStore2::ScopeType::ACCOUNT, kAppId), Eq(Thunder::Core::ERROR_NONE));
     ASSERT_THAT(req.app_id(), Eq(kAppId));
     EXPECT_THAT(req.scope(), Eq(kScope));
 }

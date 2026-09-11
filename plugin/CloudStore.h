@@ -22,7 +22,7 @@
 #include "Module.h"
 #include <interfaces/json/JStore2.h>
 
-namespace WPEFramework {
+namespace Thunder {
 namespace Plugin {
 
     class CloudStore : public PluginHost::IPlugin, public PluginHost::JSONRPC {
@@ -141,4 +141,4 @@ namespace Plugin {
     };
 
 } // namespace Plugin
-} // namespace WPEFramework
+} // namespace Thunder

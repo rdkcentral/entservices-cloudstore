@@ -25,11 +25,11 @@
 #include <interfaces/IStoreCache.h>
 
 class CloudStoreImplementationMock
-    : public WPEFramework::Exchange::IStore,
-      public WPEFramework::Exchange::IStore2,
-      public WPEFramework::Exchange::IStoreCache,
-      public WPEFramework::Exchange::IStoreInspector,
-      public WPEFramework::Exchange::IStoreLimit {
+    : public Thunder::Exchange::IStore,
+      public Thunder::Exchange::IStore2,
+      public Thunder::Exchange::IStoreCache,
+      public Thunder::Exchange::IStoreInspector,
+      public Thunder::Exchange::IStoreLimit {
 public:
     ~CloudStoreImplementationMock() override = default;
     MOCK_METHOD(uint32_t, Register, (IStore::INotification * notification), (override));

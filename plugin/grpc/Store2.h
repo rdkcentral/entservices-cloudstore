@@ -31,7 +31,7 @@
 #include <sysMgr.h>
 #endif
 
-namespace WPEFramework {
+namespace Thunder {
 namespace Plugin {
     namespace Grpc {
 
@@ -146,7 +146,7 @@ namespace Plugin {
                 // Get actual token, as it may change at any time...
                 Exchange::IAuthService *authservicePlugin = _service->QueryInterfaceByCallsign<Exchange::IAuthService>("org.rdk.AuthService");
                 if (authservicePlugin != nullptr) {
-                    WPEFramework::Exchange::IAuthService::GetServiceAccessTokenResult atRes;
+                    Thunder::Exchange::IAuthService::GetServiceAccessTokenResult atRes;
                     uint32_t res = authservicePlugin->GetServiceAccessToken(atRes);
                     authservicePlugin->Release();
 
@@ -438,4 +438,4 @@ namespace Plugin {
 
     } // namespace Grpc
 } // namespace Plugin
-} // namespace WPEFramework
+} // namespace Thunder

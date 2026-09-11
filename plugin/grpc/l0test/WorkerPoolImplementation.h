@@ -22,10 +22,10 @@
 #include "../../Module.h"
 
 class WorkerPoolImplementation
-    : public WPEFramework::Core::WorkerPool,
-      public WPEFramework::Core::ThreadPool::ICallback {
+    : public Thunder::Core::WorkerPool,
+      public Thunder::Core::ThreadPool::ICallback {
 private:
-    class Dispatcher : public WPEFramework::Core::ThreadPool::IDispatcher {
+    class Dispatcher : public Thunder::Core::ThreadPool::IDispatcher {
     public:
         Dispatcher(const Dispatcher&) = delete;
         Dispatcher& operator=(const Dispatcher&) = delete;
@@ -39,7 +39,7 @@ private:
         void Deinitialize() override
         {
         }
-        void Dispatch(WPEFramework::Core::IDispatch* job) override
+        void Dispatch(Thunder::Core::IDispatch* job) override
         {
             job->Dispatch();
         }
@@ -50,7 +50,7 @@ public:
     WorkerPoolImplementation(const WorkerPoolImplementation&) = delete;
     WorkerPoolImplementation& operator=(const WorkerPoolImplementation&) = delete;
     WorkerPoolImplementation(const uint32_t stackSize)
-        : WPEFramework::Core::WorkerPool(4 /*threadCount*/, stackSize, 32 /*queueSize*/, &_dispatch, this)
+        : Thunder::Core::WorkerPool(4 /*threadCount*/, stackSize, 32 /*queueSize*/, &_dispatch, this)
         , _dispatch()
     {
         Run();

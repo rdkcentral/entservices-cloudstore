@@ -20,7 +20,7 @@
 #include "CloudStoreImplementation.h"
 #include "grpc/Store2.h"
 
-namespace WPEFramework {
+namespace Thunder {
 namespace Plugin {
 
     SERVICE_REGISTRATION(CloudStoreImplementation, 1, 0);
@@ -52,4 +52,4 @@ namespace Plugin {
     }
 
 } // namespace Plugin
-} // namespace WPEFramework
+} // namespace Thunder

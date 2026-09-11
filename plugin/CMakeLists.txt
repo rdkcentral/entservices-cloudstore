@@ -18,7 +18,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 set(PLUGIN_NAME CloudStore)
-find_package(WPEFramework NAMES WPEFramework Thunder)
+find_package(Thunder)
 set(MODULE_NAME ${NAMESPACE}${PLUGIN_NAME})
 
 set(CMAKE_CXX_STANDARD 11)
