@@ -28,7 +28,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-find_package(Thunder REQUIRED)
+find_package(Thunder QUIET)
+
+if(NOT Thunder_FOUND)
+    find_package(WPEFramework QUIET)
+    if(NOT WPEFramework_FOUND)
+        message(FATAL_ERROR "Neither Thunder nor WPEFramework found in sysroot")
+    endif()
+    add_compile_definitions(Thunder=WPEFramework)
+endif()
 find_package(${NAMESPACE}Plugins REQUIRED)
 find_package(${NAMESPACE}Definitions REQUIRED)
 
